@@ -1,17 +1,23 @@
 <template>
   <div class="tab-bar">
-    <div class="tab-dot"></div>
-    <div class="tab-container" v-for="item in items" v-bind:key="item.index" :id="`tab-container-${item.index}`" @click="handleClick(item)">
-      <div class="tab-icon">
-        <div v-if="isActive(item)" class="tab-img active">
-          <img :src="item.activeImgSrc" alt="item.title">
+    <div class="tab-dot" :style="{left: activeLeft}"></div>
+    <div
+      class="tab-container"
+      v-for="item in items"
+      v-bind:key="item.index"
+      :id="`tab-container-${item.index}`"
+      @click="handleClick(item)"
+    >
+      <div class="tab-icon" :class="isActive(item) ? 'active' : ''">
+        <div class="tab-img-active">
+          <img :src="item.activeImgSrc" alt="item.title" />
         </div>
-        <div v-if="!isActive(item)" class="tab-img default">
-          <img :src="item.imgSrc" alt="item.title">
+        <div class="tab-img-default">
+          <img :src="item.imgSrc" alt="item.title" />
         </div>
       </div>
       <div class="tab-text">
-          <div class="tab-title" v-if="!isActive(item)">{{item.title}}</div>
+        <div class="tab-title" :class="!isActive(item) ? 'show' : 'hide'">{{item.title}}</div>
       </div>
     </div>
   </div>
@@ -28,31 +34,42 @@ import activeMine from './img/mine-active.svg'
 export default {
   data () {
     return {
-      activeColor: '#8e44ad',
-      defaultColor: '#2c3e50',
       activeItem: 'Home',
       items: [
         {
+          index: 0,
           title: 'Home',
           imgSrc: home,
           activeImgSrc: activeHome
         },
         {
+          index: 1,
           title: 'Camera',
           imgSrc: camera,
           activeImgSrc: activeCamera
         },
         {
+          index: 2,
           title: 'Files',
           imgSrc: file,
           activeImgSrc: activeFile
         },
         {
+          index: 3,
           title: 'Profile',
           imgSrc: mine,
           activeImgSrc: activeMine
         }
       ]
+    }
+  },
+  computed: {
+    activeLeft() {
+      for(let i in this.items) {
+        if(this.items[i].title === this.activeItem) {
+          return i * 25 + 11.5 + '%'
+        }
+      }
     }
   },
   methods: {
@@ -84,27 +101,72 @@ export default {
     border-radius: 50%;
     background-color: #3498db;
     bottom: 1.5rem;
-    left: 7.5rem;
-    transition: all 1s;
+    // left: 11.5%;
+    transition: all 0.9s;
   }
   .tab-container {
-    width: 9rem;
+    width: 25%;
     height: 9rem;
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
+    .tab-icon {
+      width: 4rem;
+      height: 4rem;
+      overflow: hidden;
+      .tab-img-active {
+        width: 100%;
+        height: 100%;
+        transition: all 1s;
+        transform: translate(0,-4rem);
+        z-index: 0;
+      }
+      .tab-img-default {
+        width: 100%;
+        height: 100%;
+        transition: all 1s;
+        transform: translate(0, -4rem);
+        z-index: 1;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      &.active {
+        .tab-img-active {
+          transform: translate(0,0);
+        }
+        .tab-img-default {
+          // transform: translate(0,4rem);
+          opacity: 0;
+          transition-delay: 0.5s;
+        }
+        animation: shake 1s;
+      }
+    }
     .tab-text {
       width: 5rem;
       color: #8a8a8a;
       font-size: 1.5rem;
       text-align: center;
-    }
-    img {
-      width: 4rem;
-      height: 4rem;
+      .tab-title {
+        transition: all 1s;
+        &.show {
+          opacity: 1;
+        }
+        &.hide {
+          opacity: 0;
+        }
+      }
     }
   }
-    
+}
+
+@keyframes shake{
+  0%   {transform: rotate(0deg);}
+  25%  {transform: rotate(-30deg);}
+  50%  {transform: rotate(-35deg);}
+  100% {transform: rotate(0deg);}
 }
 </style>
