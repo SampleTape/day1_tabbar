@@ -64,9 +64,9 @@ export default {
     }
   },
   computed: {
-    activeLeft() {
-      for(let i in this.items) {
-        if(this.items[i].title === this.activeItem) {
+    activeLeft () {
+      for (let i in this.items) {
+        if (this.items[i].title === this.activeItem) {
           return i * 25 + 11.5 + '%'
         }
       }
@@ -102,7 +102,7 @@ export default {
     background-color: #3498db;
     bottom: 1.5rem;
     // left: 11.5%;
-    transition: all 0.9s;
+    transition: all 0.5s;
   }
   .tab-container {
     width: 25%;
@@ -118,14 +118,14 @@ export default {
       .tab-img-active {
         width: 100%;
         height: 100%;
-        transition: all 1s;
-        transform: translate(0,-4rem);
+        transition: all 0.5s;
+        transform: translate(0,4rem);
         z-index: 0;
       }
       .tab-img-default {
         width: 100%;
         height: 100%;
-        transition: all 1s;
+        transition: all 0.9s;
         transform: translate(0, -4rem);
         z-index: 1;
       }
@@ -142,7 +142,7 @@ export default {
           opacity: 0;
           transition-delay: 0.5s;
         }
-        animation: shake 1s;
+        animation: shake 0.5s;
       }
     }
     .tab-text {
@@ -151,7 +151,7 @@ export default {
       font-size: 1.5rem;
       text-align: center;
       .tab-title {
-        transition: all 1s;
+        transition: all 0.5s;
         &.show {
           opacity: 1;
         }
