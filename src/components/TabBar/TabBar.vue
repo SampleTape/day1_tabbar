@@ -8,7 +8,7 @@
       :id="`tab-container-${item.index}`"
       @click="handleClick(item)"
     >
-      <div class="tab-icon" :class="isActive(item) ? 'active' : ''">
+      <div class="tab-icon" :class="isActive(item) ? 'active ' + direction : ''">
         <div class="tab-img-active">
           <img :src="item.activeImgSrc" alt="item.title" />
         </div>
@@ -34,7 +34,8 @@ import activeMine from './img/mine-active.svg'
 export default {
   data () {
     return {
-      activeItem: 'Home',
+      activeItem: 0,
+      direction: 'right',
       items: [
         {
           index: 0,
@@ -66,18 +67,27 @@ export default {
   computed: {
     activeLeft () {
       for (let i in this.items) {
-        if (this.items[i].title === this.activeItem) {
+        if (this.isActive(this.items[i])) {
           return i * 25 + 11.5 + '%'
         }
       }
     }
   },
+  watch: {
+    activeItem: function (newItem, oldItem) {
+      if (newItem > oldItem) {
+        this.direction = 'right'
+      } else if (newItem < oldItem) {
+        this.direction = 'left'
+      }
+    }
+  },
   methods: {
     handleClick (item) {
-      this.activeItem = item.title
+      this.activeItem = item.index
     },
     isActive (item) {
-      return item.title === this.activeItem
+      return item.index === this.activeItem
     }
   }
 }
@@ -102,7 +112,7 @@ export default {
     background-color: #3498db;
     bottom: 1.5rem;
     // left: 11.5%;
-    transition: all 0.5s;
+    transition: all 0.5s ease;
   }
   .tab-container {
     width: 25%;
@@ -119,13 +129,13 @@ export default {
         width: 100%;
         height: 100%;
         transition: all 0.5s;
-        transform: translate(0,4rem);
+        transform: translate(0, 4rem);
         z-index: 0;
       }
       .tab-img-default {
         width: 100%;
         height: 100%;
-        transition: all 0.9s;
+        transition: all 0.5s;
         transform: translate(0, -4rem);
         z-index: 1;
       }
@@ -135,14 +145,19 @@ export default {
       }
       &.active {
         .tab-img-active {
-          transform: translate(0,0);
+          transform: translate(0, 0);
         }
         .tab-img-default {
           // transform: translate(0,4rem);
           opacity: 0;
-          transition-delay: 0.5s;
+          transition-delay: 0.3s;
         }
-        animation: shake 0.5s;
+        &.right {
+          animation: shake-right 0.5s;
+        }
+        &.left {
+          animation: shake-left 0.5s;
+        }
       }
     }
     .tab-text {
@@ -163,10 +178,33 @@ export default {
   }
 }
 
-@keyframes shake{
-  0%   {transform: rotate(0deg);}
-  25%  {transform: rotate(-30deg);}
-  50%  {transform: rotate(-35deg);}
-  100% {transform: rotate(0deg);}
+@keyframes shake-right {
+  0% {
+    transform: rotate(0deg) translate(5px, 0);
+  }
+  25% {
+    transform: rotate(30deg) translate(5px, -5px);
+  }
+  40% {
+    transform: translate(0, -10px);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes shake-left {
+  0% {
+    transform: rotate(0deg) translate(-5px, 0);
+  }
+  25% {
+    transform: rotate(-30deg) translate(-5px, -5px);
+  }
+  40% {
+    transform: translate(0, -10px);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 </style>
