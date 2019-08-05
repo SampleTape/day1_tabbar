@@ -1,6 +1,14 @@
 # day1_tabbar
 
-> A Vue.js project
+> Tab Bar, a vue component
+
+## Source of Inspiration (UXD)
+
+https://uimovement.com/design/tab-bar-active-animation-1/
+
+## Demo
+
+![image](https://github.com/SampleTape/day1_tabbar/blob/master/src/assets/demo.gif)
 
 ## Build Setup
 
